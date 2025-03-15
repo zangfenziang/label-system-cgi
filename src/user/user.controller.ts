@@ -44,7 +44,7 @@ export class UserController {
 
   @Auth(UserLevel.Admin)
   @Post('user/:id')
-  async update(@Param('id') id: string, @Body() body) {
+  async update(@Param('id') id: string, @Body() body: User) {
     return await this.userService.updateInfo(Number(id), body);
   }
 }
