@@ -1,6 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from './user.service';
+import { UserStatus } from 'src/entity/user.model';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,11 @@ export class AuthService {
       username,
       needSensitive: true,
     });
-    if (!user || user.password !== this.usersService.addSalt(pass, user.salt)) {
+    if (
+      !user ||
+      user.status !== UserStatus.Active ||
+      user.password !== this.usersService.addSalt(pass, user.salt)
+    ) {
       throw new UnauthorizedException();
     }
     const payload = { uid: user.uid, level: user.level };

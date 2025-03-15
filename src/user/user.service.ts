@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User, UserLevel, UserStatus } from 'src/entity/user.model';
 import { FindOptionsWhere, Repository } from 'typeorm';
@@ -92,5 +92,29 @@ export class UserService {
 
   async findAll() {
     return (await this.usersRepository.find()).map(this.filterSensitive);
+  }
+
+  async updateInfo(uid: number, info: User) {
+    const user = await this.usersRepository.findOne({
+      where: {
+        uid,
+      },
+    });
+    if (!user) {
+      throw new BadRequestException('user not found');
+    }
+    const { password, status, level } = info;
+    const data: any = {};
+    if (password) {
+      data.password = password;
+    }
+    if (status) {
+      data.status = status;
+    }
+    if (level) {
+      data.level = level;
+    }
+    Object.assign(user, data);
+    await this.usersRepository.save(user);
   }
 }
