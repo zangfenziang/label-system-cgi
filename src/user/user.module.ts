@@ -6,7 +6,7 @@ import { UserController } from './user.controller';
 import { AuthController } from './auth.controller';
 import * as config from 'config';
 import { AuthService } from './auth.service';
-import { UsersService } from './user.service';
+import { UserService } from './user.service';
 import { AuthGuard } from './auth.guard';
 import { APP_GUARD } from '@nestjs/core';
 @Module({
@@ -21,7 +21,7 @@ import { APP_GUARD } from '@nestjs/core';
   controllers: [UserController, AuthController],
   providers: [
     AuthService,
-    UsersService,
+    UserService,
     {
       provide: APP_GUARD,
       useClass: AuthGuard,
@@ -29,7 +29,7 @@ import { APP_GUARD } from '@nestjs/core';
   ],
 })
 export class UserModule {
-  constructor(private readonly userService: UsersService) {
+  constructor(private readonly userService: UserService) {
     this.userService.check();
   }
 }
