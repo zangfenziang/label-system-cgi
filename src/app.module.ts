@@ -3,6 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './entity/user.model';
 import { Task } from './entity/task.model';
 import { UserModule } from './user/user.module';
+import { TaskModule } from './task/task.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { UserModule } from './user/user.module';
       synchronize: true,
     }),
     UserModule,
+    TaskModule,
   ],
   controllers: [],
   providers: [],
