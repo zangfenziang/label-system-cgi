@@ -3,6 +3,10 @@
 /node_modules
 /build
 
+# sqlite db
+/db/*
+!**/.gitkeep
+
 # Logs
 logs
 *.log
