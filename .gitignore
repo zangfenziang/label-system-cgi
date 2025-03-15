@@ -1,3 +1,4 @@
+!.gitkeep
 # compiled output
 /dist
 /node_modules
@@ -5,7 +6,6 @@
 
 # sqlite db
 /db/*
-!**/.gitkeep
 
 # Logs
 logs
