@@ -28,4 +28,8 @@ import { APP_GUARD } from '@nestjs/core';
     },
   ],
 })
-export class UserModule {}
+export class UserModule {
+  constructor(private readonly userService: UsersService) {
+    this.userService.check();
+  }
+}

@@ -11,9 +11,9 @@ import { SetMetadata } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { UserLevel } from 'src/entity/user.model';
 
-export const IS_PUBLIC_KEY = 'isPublic';
+const IS_PUBLIC_KEY = 'isPublic';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
-export const Auth_Level_KEY = 'auth';
+const Auth_Level_KEY = 'auth';
 export const Auth = (level: UserLevel) => SetMetadata(Auth_Level_KEY, level);
 
 @Injectable()
