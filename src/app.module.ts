@@ -10,6 +10,7 @@ import { UserModule } from './user/user.module';
       type: 'sqlite',
       database: './db/label-system.db',
       entities: [User, Task],
+      synchronize: true,
     }),
     UserModule,
   ],
