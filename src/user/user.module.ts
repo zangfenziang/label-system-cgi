@@ -7,6 +7,8 @@ import { AuthController } from './auth.controller';
 import * as config from 'config';
 import { AuthService } from './auth.service';
 import { UsersService } from './user.service';
+import { AuthGuard } from './auth.guard';
+import { APP_GUARD } from '@nestjs/core';
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
@@ -17,6 +19,13 @@ import { UsersService } from './user.service';
     }),
   ],
   controllers: [UserController, AuthController],
-  providers: [AuthService, UsersService],
+  providers: [
+    AuthService,
+    UsersService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+  ],
 })
 export class UserModule {}

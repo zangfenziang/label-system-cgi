@@ -1,8 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
 
 export enum UserLevel {
-  Admin = 'admin',
-  Normal = 'normal',
+  Admin = 9999,
+  Normal = 1,
 }
 
 export enum UserStatus {
