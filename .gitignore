@@ -3,12 +3,11 @@
 /node_modules
 /build
 
-# sqlite db
+# storage file
 /db/*
-
-# config
 /config/*
-/script/
+/script/*
+/file/*
 
 # Logs
 logs
