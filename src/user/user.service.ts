@@ -116,5 +116,8 @@ export class UserService {
     }
     Object.assign(user, data);
     await this.usersRepository.save(user);
+    return {
+      code: 0,
+    };
   }
 }
