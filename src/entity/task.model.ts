@@ -20,6 +20,9 @@ export class Task {
   desc: string;
 
   @Column()
+  cost: number;
+
+  @Column()
   uid: number;
 
   @Column()
@@ -28,10 +31,20 @@ export class Task {
   @Column({
     type: 'json',
   })
-  info: {};
+  info: {
+    files: {
+      name: string;
+      id: string;
+    }[];
+  };
 
   @Column({
     type: 'json',
   })
-  labelInfo: {};
+  labelInfo: {
+    files: {
+      name: string;
+      id: string;
+    }[];
+  };
 }
