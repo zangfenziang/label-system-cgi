@@ -24,7 +24,8 @@ export class TaskController {
       pageSize,
       pageNum,
     };
-    if (status === 'self') {
+    if (status === 'all') {
+    } else if (status === 'self') {
       data.uid = req.user.uid;
     } else {
       data.status = status;
