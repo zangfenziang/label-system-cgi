@@ -63,6 +63,14 @@ export class UserController {
   }
 
   @Auth(UserLevel.Admin)
+  @Get('user/:id')
+  async get(@Param('id') id: string) {
+    return this.userService.findOne({
+      uid: +id,
+    });
+  }
+
+  @Auth(UserLevel.Admin)
   @Get('user/:id/cost')
   async getCost(@Param('id') id: string, @Body() body) {
     return await this.userService.getUserCost(Number(id), body);
