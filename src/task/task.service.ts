@@ -77,6 +77,7 @@ export class TaskService {
     newTask.uid = 0;
     newTask.taskStatus = TaskStatus.Waiting;
     newTask.labelInfo = { files: [] };
+    newTask.finishTime = new Date(0);
     const ret = await this.taskRepository.insert(newTask);
     return { code: ret.identifiers.length ? 0 : 1 };
   }

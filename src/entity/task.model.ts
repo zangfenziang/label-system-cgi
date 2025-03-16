@@ -50,8 +50,6 @@ export class Task {
     }[];
   };
 
-  @Column({
-    default: new Date(),
-  })
+  @Column()
   finishTime: Date;
 }
