@@ -5,6 +5,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Request,
 } from '@nestjs/common';
 import { User, UserLevel, UserStatus } from 'src/entity/user.model';
@@ -19,6 +20,12 @@ export class UserController {
   @Get('user')
   findAll() {
     return this.userService.findAll();
+  }
+
+  @Auth(UserLevel.Admin)
+  @Put('user')
+  insert(@Body() body) {
+    return this.userService.insert(body);
   }
 
   @Get('user/me')

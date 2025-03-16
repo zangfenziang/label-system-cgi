@@ -94,6 +94,17 @@ export class UserService {
     return (await this.usersRepository.find()).map(this.filterSensitive);
   }
 
+  async insert(user: User) {
+    const newUser = new User();
+    newUser.username = user.username;
+    newUser.salt = this.rand(16);
+    newUser.password = this.addSalt(user.password, newUser.salt);
+    newUser.status = UserStatus.Active;
+    newUser.level = user.level;
+    const ret = await this.usersRepository.insert(newUser);
+    return { code: ret.identifiers.length ? 0 : 1 };
+  }
+
   async updateInfo(uid: number, info: User) {
     const user = await this.usersRepository.findOne({
       where: {
