@@ -66,7 +66,7 @@ export class TaskController {
   @Post(':id/apply')
   async apply(@Param('id') id: string, @Request() req: IRequest, @Body() body) {
     const task = await this.taskService.findOne(+id);
-    if (task.taskStatus !== TaskStatus.Lock) {
+    if ([TaskStatus.Lock, TaskStatus.Reject].includes(task.taskStatus)) {
       throw new ForbiddenException('task status illegal');
     }
     if (task.uid !== req.user.uid) {
