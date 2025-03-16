@@ -44,6 +44,7 @@ export class TaskService {
     newTask.cost = task.cost;
     newTask.info = task.info;
     newTask.taskStatus = TaskStatus.Waiting;
+    newTask.labelInfo = { files: [] };
     const ret = await this.taskRepository.insert(newTask);
     return { code: ret.identifiers.length ? 0 : 1 };
   }
