@@ -14,6 +14,12 @@ export class Task {
   taskId: number;
 
   @Column()
+  title: string;
+
+  @Column()
+  desc: string;
+
+  @Column()
   uid: number;
 
   @Column()

@@ -25,12 +25,14 @@
     "@nestjs/jwt": "^11.0.0",
     "@nestjs/platform-express": "^10.0.0",
     "@nestjs/typeorm": "^11.0.0",
+    "axios": "^1.8.3",
     "config": "^3.3.12",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "sha.js": "^2.4.11",
     "sqlite3": "^5.1.7",
-    "typeorm": "^0.3.21"
+    "typeorm": "^0.3.21",
+    "uuid": "^11.1.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
