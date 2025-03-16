@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from './user.service';
 import { UserStatus } from 'src/entity/user.model';
@@ -20,7 +20,7 @@ export class AuthService {
       user.status !== UserStatus.Active ||
       user.password !== this.usersService.addSalt(pass, user.salt)
     ) {
-      throw new UnauthorizedException();
+      throw new ForbiddenException('user illegal');
     }
     const payload = { uid: user.uid, level: user.level };
     return {
