@@ -61,4 +61,10 @@ export class UserController {
   async del(@Param('id') id: string) {
     return this.userService.del(+id);
   }
+
+  @Auth(UserLevel.Admin)
+  @Get('user/:id/cost')
+  async getCost(@Param('id') id: string, @Body() body) {
+    return await this.userService.getUserCost(Number(id), body);
+  }
 }

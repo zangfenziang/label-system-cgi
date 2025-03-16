@@ -9,9 +9,10 @@ import { AuthService } from './auth.service';
 import { UserService } from './user.service';
 import { AuthGuard } from './auth.guard';
 import { APP_GUARD } from '@nestjs/core';
+import { Task } from 'src/entity/task.model';
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, Task]),
     JwtModule.register({
       global: true,
       secret: config.get('jwtToken'),

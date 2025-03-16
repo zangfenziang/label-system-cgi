@@ -1,12 +1,13 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Task, TaskStatus } from 'src/entity/task.model';
 import {
   filterSensitive,
   User,
   UserLevel,
   UserStatus,
 } from 'src/entity/user.model';
-import { FindOptionsWhere, Repository } from 'typeorm';
+import { FindOptionsWhere, Repository, Between } from 'typeorm';
 const shajs = require('sha.js');
 
 @Injectable()
@@ -14,6 +15,8 @@ export class UserService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    @InjectRepository(Task)
+    private taskRepository: Repository<Task>,
   ) {}
 
   hash(str: string) {
@@ -130,6 +133,18 @@ export class UserService {
     return {
       code: 0,
     };
+  }
+
+  async getUserCost(id: number, query: any) {
+    const begin = Number(query.begin) || 0;
+    const end = Number(query.end) || Date.now();
+    return await this.taskRepository.find({
+      where: {
+        uid: id,
+        taskStatus: TaskStatus.Accept,
+        finishTime: Between(new Date(begin), new Date(end)),
+      },
+    });
   }
 
   async del(uid: number) {

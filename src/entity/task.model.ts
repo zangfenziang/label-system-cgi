@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
 
 export enum TaskStatus {
   Waiting = 'waiting',
@@ -50,6 +50,7 @@ export class Task {
     }[];
   };
 
+  @Index()
   @Column()
   finishTime: Date;
 }
