@@ -22,7 +22,9 @@ export class Task {
   @Column()
   cost: number;
 
-  @Column()
+  @Column({
+    default: '',
+  })
   uid: number;
 
   @Column()

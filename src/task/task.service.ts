@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Task } from 'src/entity/task.model';
+import { Task, TaskStatus } from 'src/entity/task.model';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -43,6 +43,7 @@ export class TaskService {
     newTask.desc = task.desc;
     newTask.cost = task.cost;
     newTask.info = task.info;
+    newTask.taskStatus = TaskStatus.Waiting;
     const ret = await this.taskRepository.insert(newTask);
     return { code: ret.identifiers.length ? 0 : 1 };
   }
