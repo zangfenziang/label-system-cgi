@@ -71,6 +71,7 @@ export class TaskService {
   async insert(task: Task) {
     const newTask = new Task();
     this.conv(task, newTask);
+    newTask.uid = 0;
     newTask.taskStatus = TaskStatus.Waiting;
     newTask.labelInfo = { files: [] };
     const ret = await this.taskRepository.insert(newTask);
