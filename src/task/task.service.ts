@@ -62,12 +62,15 @@ export class TaskService {
     };
   }
 
-  async insert(task: Task) {
-    const newTask = new Task();
+  conv(task: Task, newTask: Task) {
     newTask.title = task.title;
     newTask.desc = task.desc;
     newTask.cost = task.cost;
     newTask.info = task.info;
+  }
+  async insert(task: Task) {
+    const newTask = new Task();
+    this.conv(task, newTask);
     newTask.taskStatus = TaskStatus.Waiting;
     newTask.labelInfo = { files: [] };
     const ret = await this.taskRepository.insert(newTask);

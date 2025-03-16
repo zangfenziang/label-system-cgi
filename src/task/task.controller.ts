@@ -107,6 +107,15 @@ export class TaskController {
   }
 
   @Auth(UserLevel.Admin)
+  @Post(':id')
+  async update(@Param('id') id: string, @Body() body) {
+    const task = await this.taskService.findOne(+id);
+    this.taskService.conv(body, task);
+    await this.taskService.save(task);
+    return { code: 0 };
+  }
+
+  @Auth(UserLevel.Admin)
   @Delete(':id')
   async del(@Param('id') id: string) {
     await this.taskService.delete(+id);
