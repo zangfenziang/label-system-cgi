@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   Delete,
+  ForbiddenException,
   Get,
+  Param,
   Post,
   Put,
   Query,
@@ -12,6 +14,7 @@ import { TaskService } from './task.service';
 import { Auth } from 'src/user/auth.guard';
 import { UserLevel } from 'src/entity/user.model';
 import { IRequest } from 'src/type';
+import { TaskStatus } from 'src/entity/task.model';
 
 @Controller('cgi/task')
 export class TaskController {
@@ -34,10 +37,29 @@ export class TaskController {
   }
 
   @Post(':id/lock')
-  lock() {}
+  async lock(@Param('id') id: string, @Request() req: IRequest) {
+    const task = await this.taskService.findOne(+id);
+    if (task.taskStatus !== TaskStatus.Waiting) {
+      throw new ForbiddenException('task status illegal');
+    }
+    task.uid = req.user.uid;
+  }
 
   @Post(':id/apply')
-  apply() {}
+  async apply(@Param('id') id: string, @Request() req: IRequest) {
+    const task = await this.taskService.findOne(+id);
+    if (task.uid !== req.user.uid) {
+      throw new ForbiddenException('user illegal');
+    }
+  }
+
+  @Post(':id/withdraw')
+  async withdraw(@Param('id') id: string, @Request() req: IRequest) {
+    const task = await this.taskService.findOne(+id);
+    if (task.uid !== req.user.uid) {
+      throw new ForbiddenException('user illegal');
+    }
+  }
 
   @Auth(UserLevel.Admin)
   @Put()
@@ -47,9 +69,17 @@ export class TaskController {
 
   @Auth(UserLevel.Admin)
   @Post(':id/status')
-  changeStatus() {}
+  async changeStatus(@Param('id') id: string, @Body() body) {
+    const task = await this.taskService.findOne(+id);
+    task.taskStatus = body.status;
+    await this.taskService.save(task);
+    return { code: 0 };
+  }
 
   @Auth(UserLevel.Admin)
   @Delete(':id')
-  del() {}
+  async del(@Param('id') id: string) {
+    await this.taskService.delete(+id);
+    return { code: 0 };
+  }
 }
