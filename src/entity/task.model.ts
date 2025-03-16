@@ -49,4 +49,7 @@ export class Task {
       id: string;
     }[];
   };
+
+  @Column()
+  finishTime: Date;
 }

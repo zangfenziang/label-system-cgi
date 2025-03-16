@@ -106,6 +106,9 @@ export class TaskController {
       throw new ForbiddenException('task status illegal');
     }
     task.taskStatus = body.to;
+    if (body.to === TaskStatus.Accept) {
+      task.finishTime = new Date();
+    }
     await this.taskService.save(task);
     return { code: 0 };
   }
