@@ -22,6 +22,7 @@ export class Task {
   @Column()
   cost: number;
 
+  @Index()
   @Column({
     default: '',
   })
