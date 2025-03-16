@@ -102,7 +102,10 @@ export class TaskController {
   @Post(':id/status')
   async changeStatus(@Param('id') id: string, @Body() body) {
     const task = await this.taskService.findOne(+id);
-    task.taskStatus = body.status;
+    if (task.taskStatus !== body.from) {
+      throw new ForbiddenException('task status illegal');
+    }
+    task.taskStatus = body.to;
     await this.taskService.save(task);
     return { code: 0 };
   }
