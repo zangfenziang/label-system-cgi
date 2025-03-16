@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task, TaskStatus } from 'src/entity/task.model';
-import { User } from 'src/entity/user.model';
+import { filterSensitive, User } from 'src/entity/user.model';
 import { In, Repository } from 'typeorm';
 
 @Injectable()
@@ -45,6 +45,7 @@ export class TaskService {
           uid: In(uidList),
         },
       });
+      userList = userList.map(filterSensitive);
     }
     return {
       code: 0,

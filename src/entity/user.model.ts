@@ -10,6 +10,12 @@ export enum UserStatus {
   Inactive = 'inactive',
 }
 
+export const filterSensitive = (user: User) => {
+  delete user.password;
+  delete user.salt;
+  return user;
+};
+
 @Entity()
 export class User {
   @PrimaryGeneratedColumn()

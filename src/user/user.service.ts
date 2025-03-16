@@ -1,6 +1,11 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { User, UserLevel, UserStatus } from 'src/entity/user.model';
+import {
+  filterSensitive,
+  User,
+  UserLevel,
+  UserStatus,
+} from 'src/entity/user.model';
 import { FindOptionsWhere, Repository } from 'typeorm';
 const shajs = require('sha.js');
 
@@ -66,12 +71,6 @@ export class UserService {
     }
   }
 
-  filterSensitive(user: User) {
-    delete user.password;
-    delete user.salt;
-    return user;
-  }
-
   async findOne(params: {
     uid?: number;
     username?: string;
@@ -87,11 +86,11 @@ export class UserService {
     const user = await this.usersRepository.findOne({
       where: whereCondition,
     });
-    return params.needSensitive ? user : this.filterSensitive(user);
+    return params.needSensitive ? user : filterSensitive(user);
   }
 
   async findAll() {
-    return (await this.usersRepository.find()).map(this.filterSensitive);
+    return (await this.usersRepository.find()).map(filterSensitive);
   }
 
   async insert(user: User) {
