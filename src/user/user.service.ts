@@ -132,4 +132,10 @@ export class UserService {
       code: 0,
     };
   }
+
+  async del(uid: number) {
+    return await this.usersRepository.delete({
+      uid,
+    });
+  }
 }

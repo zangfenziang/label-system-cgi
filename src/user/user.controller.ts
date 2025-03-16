@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   ForbiddenException,
   Get,
   Param,
@@ -53,5 +54,11 @@ export class UserController {
   @Post('user/:id')
   async update(@Param('id') id: string, @Body() body: User) {
     return await this.userService.updateInfo(Number(id), body);
+  }
+
+  @Auth(UserLevel.Admin)
+  @Delete('user/:id')
+  async del(@Param('id') id: string) {
+    return this.userService.del(+id);
   }
 }
