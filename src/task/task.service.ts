@@ -30,6 +30,9 @@ export class TaskService {
       query
         .skip((pageNum - 1) * pageSize)
         .take(pageSize)
+        .orderBy({
+          taskId: 'DESC',
+        })
         .getMany(),
       query.getCount(),
     ]);
