@@ -43,6 +43,9 @@ export class TaskController {
       throw new ForbiddenException('task status illegal');
     }
     task.uid = req.user.uid;
+    task.taskStatus = TaskStatus.Lock;
+    await this.taskService.save(task);
+    return { code: 0 };
   }
 
   @Post(':id/apply')
