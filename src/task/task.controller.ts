@@ -48,6 +48,21 @@ export class TaskController {
     return { code: 0 };
   }
 
+  @Post(':id/unlock')
+  async unlock(@Param('id') id: string, @Request() req: IRequest) {
+    const task = await this.taskService.findOne(+id);
+    if (task.taskStatus !== TaskStatus.Lock) {
+      throw new ForbiddenException('task status illegal');
+    }
+    if (task.uid !== req.user.uid && req.user.level !== UserLevel.Admin) {
+      throw new ForbiddenException('user illegal');
+    }
+    task.uid = 0;
+    task.taskStatus = TaskStatus.Waiting;
+    await this.taskService.save(task);
+    return { code: 0 };
+  }
+
   @Post(':id/apply')
   async apply(@Param('id') id: string, @Request() req: IRequest) {
     const task = await this.taskService.findOne(+id);
