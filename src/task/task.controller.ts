@@ -73,6 +73,7 @@ export class TaskController {
       throw new ForbiddenException('user illegal');
     }
     task.labelInfo = body;
+    task.taskStatus = TaskStatus.Audit;
     await this.taskService.save(task);
     return { code: 0 };
   }
