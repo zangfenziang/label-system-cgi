@@ -41,7 +41,9 @@ export class TaskController {
 
   @Auth(UserLevel.Admin)
   @Put()
-  create() {}
+  create(@Body() body) {
+    return this.taskService.insert(body);
+  }
 
   @Auth(UserLevel.Admin)
   @Post(':id/status')
