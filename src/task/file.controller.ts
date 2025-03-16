@@ -6,11 +6,13 @@ import {
   Param,
   Post,
   Put,
+  StreamableFile,
 } from '@nestjs/common';
 import { TaskService } from './task.service';
 import * as path from 'path';
 import * as fs from 'fs/promises';
 import * as uuid from 'uuid';
+import { createReadStream } from 'fs';
 
 @Controller('cgi/file')
 export class FileController {
@@ -23,11 +25,7 @@ export class FileController {
       throw new ForbiddenException();
     }
     const filePath = path.resolve(FileController.DIR, id);
-    const resp = await fs.readFile(filePath);
-    return {
-      code: 0,
-      content: resp.toString(),
-    };
+    return new StreamableFile(createReadStream(filePath));
   }
 
   @Put('/')
