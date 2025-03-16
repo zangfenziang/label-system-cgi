@@ -64,19 +64,31 @@ export class TaskController {
   }
 
   @Post(':id/apply')
-  async apply(@Param('id') id: string, @Request() req: IRequest) {
+  async apply(@Param('id') id: string, @Request() req: IRequest, @Body() body) {
     const task = await this.taskService.findOne(+id);
+    if (task.taskStatus !== TaskStatus.Lock) {
+      throw new ForbiddenException('task status illegal');
+    }
     if (task.uid !== req.user.uid) {
       throw new ForbiddenException('user illegal');
     }
+    task.labelInfo = body;
+    await this.taskService.save(task);
+    return { code: 0 };
   }
 
   @Post(':id/withdraw')
   async withdraw(@Param('id') id: string, @Request() req: IRequest) {
     const task = await this.taskService.findOne(+id);
+    if (task.taskStatus !== TaskStatus.Audit) {
+      throw new ForbiddenException('task status illegal');
+    }
     if (task.uid !== req.user.uid) {
       throw new ForbiddenException('user illegal');
     }
+    task.taskStatus = TaskStatus.Lock;
+    await this.taskService.save(task);
+    return { code: 0 };
   }
 
   @Auth(UserLevel.Admin)
