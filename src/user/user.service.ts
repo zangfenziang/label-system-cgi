@@ -106,7 +106,8 @@ export class UserService {
     const { password, status, level } = info;
     const data: any = {};
     if (password) {
-      data.password = password;
+      data.salt = this.rand(16);
+      data.password = this.addSalt(password, data.salt);
     }
     if (status) {
       data.status = status;
