@@ -6,6 +6,7 @@ import { UserModule } from './user/user.module';
 import { TaskModule } from './task/task.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
 import { join } from 'path';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -19,9 +20,12 @@ import { join } from 'path';
     TaskModule,
     ServeStaticModule.forRoot({
       rootPath: '../label-system/dist',
+      serveStaticOptions: {
+        index: false,
+      },
     }),
   ],
-  controllers: [],
+  controllers: [AppController],
   providers: [],
 })
 export class AppModule {}
