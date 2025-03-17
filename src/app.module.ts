@@ -4,6 +4,7 @@ import { User } from './entity/user.model';
 import { Task } from './entity/task.model';
 import { UserModule } from './user/user.module';
 import { TaskModule } from './task/task.module';
+import { MainController } from './app.controller';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { TaskModule } from './task/task.module';
     UserModule,
     TaskModule,
   ],
-  controllers: [],
+  controllers: [MainController],
   providers: [],
 })
 export class AppModule {}
