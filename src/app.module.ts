@@ -4,7 +4,8 @@ import { User } from './entity/user.model';
 import { Task } from './entity/task.model';
 import { UserModule } from './user/user.module';
 import { TaskModule } from './task/task.module';
-import { MainController } from './app.controller';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'path';
 
 @Module({
   imports: [
@@ -16,8 +17,11 @@ import { MainController } from './app.controller';
     }),
     UserModule,
     TaskModule,
+    ServeStaticModule.forRoot({
+      rootPath: '../label-system/dist',
+    }),
   ],
-  controllers: [MainController],
+  controllers: [],
   providers: [],
 })
 export class AppModule {}
