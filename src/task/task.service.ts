@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Task, TaskStatus } from 'src/entity/task.model';
+import { filterTaskFile, Task, TaskStatus } from 'src/entity/task.model';
 import { filterSensitive, User } from 'src/entity/user.model';
+import { IRequest } from 'src/type';
 import { In, Repository } from 'typeorm';
 
 @Injectable()
@@ -13,7 +14,7 @@ export class TaskService {
     private userRepository: Repository<User>,
   ) {}
 
-  async findAll(dto) {
+  async findAll(dto, req: IRequest) {
     const { status, pageSize = 10, pageNum = 1, uid } = dto;
     const query = this.taskRepository.createQueryBuilder().select();
     if (status) {
@@ -52,15 +53,17 @@ export class TaskService {
     }
     return {
       code: 0,
-      list: list.map((item) => {
-        if (item.uid) {
-          return {
-            ...item,
-            user: userList.find((user) => user.uid === item.uid),
-          };
-        }
-        return item;
-      }),
+      list: list
+        .map((item) => {
+          if (item.uid) {
+            return {
+              ...item,
+              user: userList.find((user) => user.uid === item.uid),
+            };
+          }
+          return item;
+        })
+        .map((item) => filterTaskFile(item, req.user.uid, req.user.level)),
       total,
     };
   }

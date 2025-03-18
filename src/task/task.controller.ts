@@ -33,7 +33,7 @@ export class TaskController {
     } else {
       data.status = status;
     }
-    return this.taskService.findAll(data);
+    return this.taskService.findAll(data, req);
   }
 
   @Post(':id/lock')

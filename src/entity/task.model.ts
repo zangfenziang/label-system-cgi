@@ -1,4 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
+import { UserLevel, type User } from './user.model';
 
 export enum TaskStatus {
   Waiting = 'waiting',
@@ -7,6 +8,17 @@ export enum TaskStatus {
   Accept = 'accept',
   Reject = 'reject',
 }
+
+export const filterTaskFile = (task: Task, uid: number, level: UserLevel) => {
+  if (task.uid === uid || level === UserLevel.Admin) {
+    return task;
+  }
+  return {
+    ...task,
+    info: { files: [] },
+    labelInfo: { files: [] },
+  };
+};
 
 @Entity()
 export class Task {
