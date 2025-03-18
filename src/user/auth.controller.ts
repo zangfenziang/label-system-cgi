@@ -16,6 +16,6 @@ export class AuthController {
   @Public()
   @Get('loginsession')
   async loginsession(@Request() req: IRequest) {
-    return { code: req.user.uid ? 0 : 1 };
+    return { code: req?.user?.uid ? 0 : 1 };
   }
 }
