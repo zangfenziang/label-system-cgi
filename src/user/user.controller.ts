@@ -10,7 +10,7 @@ import {
   Request,
 } from '@nestjs/common';
 import { User, UserLevel, UserStatus } from 'src/entity/user.model';
-import { Auth } from './auth.guard';
+import { Auth, Public } from './auth.guard';
 import { UserService } from './user.service';
 import { IRequest } from 'src/type';
 
@@ -23,9 +23,12 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  @Auth(UserLevel.Admin)
+  @Public()
   @Put('user')
-  insert(@Body() body) {
+  insert(@Body() body: User, @Request() req: IRequest) {
+    if (req?.user?.level !== UserLevel.Admin) {
+      body.level = UserLevel.Normal;
+    }
     return this.userService.insert(body);
   }
 
