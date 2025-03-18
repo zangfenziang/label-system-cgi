@@ -1,6 +1,7 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Request } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { Public } from './auth.guard';
+import { IRequest } from 'src/type';
 
 @Controller('cgi')
 export class AuthController {
@@ -10,5 +11,11 @@ export class AuthController {
   @Post('sign')
   async sign(@Body() body) {
     return await this.authService.signIn(body.username, body.password);
+  }
+
+  @Public()
+  @Get('isLogin')
+  async isLogin(@Request() req: IRequest) {
+    return { code: req.user.uid ? 0 : 1 };
   }
 }
