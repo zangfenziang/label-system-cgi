@@ -28,8 +28,8 @@ export class TaskService {
     }
     const [list, total] = await Promise.all([
       query
-        .skip((pageNum - 1) * pageSize)
         .take(pageSize)
+        .skip((pageNum - 1) * pageSize)
         .orderBy({
           taskId: 'DESC',
         })
