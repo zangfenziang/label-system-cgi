@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, Index, In } from 'typeorm';
 import { UserLevel, type User } from './user.model';
 
 export enum TaskStatus {
@@ -25,6 +25,7 @@ export class Task {
   @PrimaryGeneratedColumn()
   taskId: number;
 
+  @Index({ unique: true })
   @Column()
   title: string;
 
