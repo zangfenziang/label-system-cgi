@@ -14,7 +14,7 @@ import { TaskService } from './task.service';
 import { Auth } from 'src/user/auth.guard';
 import { UserLevel } from 'src/entity/user.model';
 import { IRequest } from 'src/type';
-import { TaskStatus } from 'src/entity/task.model';
+import { filterTaskFile, TaskStatus } from 'src/entity/task.model';
 
 @Controller('cgi/task')
 export class TaskController {
@@ -34,6 +34,15 @@ export class TaskController {
       data.status = status;
     }
     return this.taskService.findAll(data, req);
+  }
+
+  @Get(':id')
+  async findOne(@Param('id') id: string, @Request() req: IRequest) {
+    const task = await this.taskService.findOne(+id);
+    return {
+      code: 0,
+      task: filterTaskFile(task, req.user.uid, req.user.level),
+    };
   }
 
   @Post(':id/lock')
