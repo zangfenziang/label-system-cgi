@@ -36,12 +36,18 @@ export class TaskController {
     return this.taskService.findAll(data, req);
   }
 
-  @Get(':id')
+  @Get(':id/label')
   async findOne(@Param('id') id: string, @Request() req: IRequest) {
     const task = await this.taskService.findOne(+id);
+    const all = await this.taskService.findAll(
+      { status: TaskStatus.Lock, uid: req.user.uid, pageSize: 1000 },
+      req,
+    );
     return {
       code: 0,
       task: filterTaskFile(task, req.user.uid, req.user.level),
+      lock: all.list.length,
+      next: all.list.find((item) => item.taskId !== +id)?.taskId,
     };
   }
 
