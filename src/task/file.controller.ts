@@ -21,7 +21,7 @@ export class FileController {
 
   @Get('/:id')
   async get(@Param('id') id: string) {
-    if (id.includes('.')) {
+    if (id.includes('..')) {
       throw new ForbiddenException();
     }
     const filePath = path.resolve(FileController.DIR, id);
