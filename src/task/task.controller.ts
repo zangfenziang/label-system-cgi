@@ -93,6 +93,20 @@ export class TaskController {
     return { code: 0 };
   }
 
+  @Post(':id/save')
+  async save(@Param('id') id: string, @Request() req: IRequest, @Body() body) {
+    const task = await this.taskService.findOne(+id);
+    if (![TaskStatus.Lock, TaskStatus.Reject].includes(task.taskStatus)) {
+      throw new ForbiddenException('task status illegal');
+    }
+    if (task.uid !== req.user.uid) {
+      throw new ForbiddenException('user illegal');
+    }
+    task.labelInfo = body;
+    await this.taskService.save(task);
+    return { code: 0 };
+  }
+
   @Post(':id/withdraw')
   async withdraw(@Param('id') id: string, @Request() req: IRequest) {
     const task = await this.taskService.findOne(+id);
