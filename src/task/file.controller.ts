@@ -46,6 +46,7 @@ export class FileController {
   @Post('/conv')
   async conv(@Body() body) {
     const tmpobj = tmp.dirSync();
+    console.log('conv', tmpobj.name);
     const pyFile = path.join(tmpobj.name, 'extract_data.py');
     await fs.copyFile('./py/extract_data.py', pyFile);
     const { files } = body;
