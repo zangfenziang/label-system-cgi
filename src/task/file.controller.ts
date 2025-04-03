@@ -88,7 +88,6 @@ export class FileController {
       fs.readFile(conn),
       fs.readFile(meta),
     ]);
-    tmpobj.removeCallback();
     return {
       conn: connFile.toString(),
       meta: metaFile.toString(),
