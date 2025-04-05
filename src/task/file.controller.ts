@@ -121,24 +121,36 @@ export class FileController {
       .map((_, index) => `${index}.json`)
       .join(' ');
     const execStr = `python3 export_data.py ${input}`;
-    await new Promise((resolve, reject) => {
-      exec(
-        execStr,
-        {
-          cwd: tmpobj.name,
-        },
-        (error, stdout, stderr) => {
-          if (error) {
-            reject(error);
-            return;
-          }
-          if (stderr) {
-            console.error('exec', execStr, 'err:', stderr);
-          }
-          resolve(stdout);
-        },
-      );
-    });
+    try {
+      await new Promise((resolve, reject) => {
+        exec(
+          execStr,
+          {
+            cwd: tmpobj.name,
+          },
+          (error, stdout, stderr) => {
+            if (error) {
+              reject({
+                error,
+                stderr,
+                stdout,
+              });
+              return;
+            }
+            if (stderr) {
+              console.error('exec', execStr, 'err:', stderr);
+            }
+            resolve(stdout);
+          },
+        );
+      });
+    } catch (err) {
+      console.log(err);
+      return {
+        code: 1,
+        msg: err.stdout,
+      };
+    }
     const furniture = path.join(tmpobj.name, 'furniture_data.txt');
     const orientation = path.join(tmpobj.name, 'orientation_tables.txt');
     const connection = path.join(tmpobj.name, 'connection_tables.txt');
