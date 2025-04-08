@@ -3,6 +3,34 @@ import pdb
 import json
 import sys
 
+def sanitize_keys(obj):
+    """
+    递归处理字典或列表中的所有 key.
+    对于 key:
+      - 将所有字母转换为小写
+      - 将空格替换为下划线
+      - 仅保留小写字母、数字和下划线
+    """
+    if isinstance(obj, dict):
+        new_obj = {}
+        for k, v in obj.items():
+            # 转为小写、替换空格为下划线
+            key_lower = k.lower().replace(' ', '_')
+            # 只保留小写字母、数字和下划线
+            new_key = re.sub(r'[^a-z0-9_]', '', key_lower)
+            if new_key == 'object':
+                v_lower = v.lower().replace(' ', '_')
+                v = re.sub(r'[^a-z0-9_]', '', v_lower)
+            new_obj[new_key] = sanitize_keys(v)
+        return new_obj
+    elif isinstance(obj, list):
+        return [sanitize_keys(item) for item in obj]
+    else:
+        # if isinstance(obj, str):
+        #     obj = obj.lower().replace(' ', '_')
+        #     obj = re.sub(r'[^a-z0-9_]', '', obj)
+        return obj
+
 def split_tag(tags):
     pattern = r'(<[^>]+><[^>]+>\[[^]]+\])'
     tags = re.sub(r"`", "", tags)
@@ -162,7 +190,7 @@ if __name__ == "__main__":
         print("用法: python extract_data.py <output_1_path> <meta_input_path> <output_3_path> <conn_input_path>")
         sys.exit(1)
     
-    meta_path = sys.argv[2]
+    meta_path = sys.argv[2] # Latest_Gemini_Data/623_Kitchen_Utility_Cart_(without_wheels)/output_2.txt
     conn_path = sys.argv[4]       
     # meta_path = 'Latest_Gemini_Data/2_Wardrobe/output_2.txt'
     # conn_path = 'Latest_Gemini_Data/2_Wardrobe/output_4.txt'
@@ -174,6 +202,10 @@ if __name__ == "__main__":
         
     conn_data = get_conn_data(conn_text)
     meta_data = get_meta_data(meta_text)
+    
+    # 在写入前对数据进行 key 清洗
+    conn_data = sanitize_keys(conn_data)
+    meta_data = sanitize_keys(meta_data)
     
     output_conn_file = "conn_data.json"
     output_meta_file = "meta_data.json"
